@@ -44,7 +44,7 @@ public class MonitorLock<T> {
 	/**
 	 * Just putting down something we can try for now basically
 	 * This'll require the user to explicitly do, for example,
-	 * "Object o = abort()," which isn't ideal, but this is just what
+	 * "original_thing_that_was_locked_on = abort()," which isn't ideal, but this is just what
 	 * I've got off the top of my head and I haven't figured out anything 
 	 * better yet.
 	 * @return
