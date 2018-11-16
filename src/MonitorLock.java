@@ -1,3 +1,10 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,15 +19,27 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MonitorLock<T> {
 	private final ReentrantLock lock = new ReentrantLock();
 	private final Condition cond = lock.newCondition();
-	private T oldObj = null;
+	ByteArrayOutputStream ba = new ByteArrayOutputStream();
+	//private T oldObj = null;
 	
 	public void lock(T obj) {
 		lock.lock();
-		oldObj = obj;
+		//this.oldObj = obj;
+		try {
+			ObjectOutputStream os = new ObjectOutputStream(ba);
+			if (obj instanceof Serializable)
+				os.writeObject(obj);
+			else 
+				throw new NotSerializableException("The object you lock on must be serializable!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void unlock() {
-		oldObj = null;
+		//oldObj = null;
 		lock.unlock();
 	}
 	
@@ -50,8 +69,22 @@ public class MonitorLock<T> {
 	 * @return
 	 */
 	public T abort() {
-		T ret = oldObj;
-		unlock();
-		return ret;
+		//T ret = oldObj;
+		ByteArrayInputStream bi = new ByteArrayInputStream(ba.toByteArray());
+		try {
+			ObjectInputStream oi = new ObjectInputStream(bi);
+			unlock();
+			try {
+				return (T) oi.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		//return ret;
 	}
 }
