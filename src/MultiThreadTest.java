@@ -90,7 +90,7 @@ public class MultiThreadTest {
 			for (int i = begin; i <= end; ++i) {
 				lock.lock(list);
 				list.add(i);
-				lock.abort();
+				list = lock.abort();
 			}
 		}
 	}

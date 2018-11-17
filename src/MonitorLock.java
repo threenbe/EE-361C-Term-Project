@@ -73,12 +73,14 @@ public class MonitorLock<T> {
 		ByteArrayInputStream bi = new ByteArrayInputStream(ba.toByteArray());
 		try {
 			ObjectInputStream oi = new ObjectInputStream(bi);
-			unlock();
+			//unlock();
 			try {
 				return (T) oi.readObject();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				unlock();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
