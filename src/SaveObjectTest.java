@@ -10,7 +10,7 @@ public class SaveObjectTest {
         int expected = test.getNum();
         lock.lock(test);
         test.setNum(100);
-        lock.abort();
+        test = (TestSerialize) lock.abort();
         Assert.assertEquals(test.getNum(), expected);
     }
 
@@ -20,7 +20,7 @@ public class SaveObjectTest {
         int expected = test.aNum;
         lock.lock(test);
         test.aNum = 20;
-        lock.abort();
+        test = (TestSerialize) lock.abort();
         Assert.assertEquals(test.aNum, expected);
     }
 
