@@ -1,6 +1,6 @@
 /*
 SIZE threads are created. Each thread has a local "proposals" array of integers
-of size 20. Each of these arrays are initialized slightly differently. For example 
+of size SIZE. Each of these arrays are initialized slightly differently. For example 
 Thread 0's array has a 0 at index 0 and 0 everywhere else. Thread 1
 has a 1 at index 1 and 0 everywhere else. Thread 2 has 2 at index 2 and 0 everywhere
 else etc.
