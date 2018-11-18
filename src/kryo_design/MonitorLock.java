@@ -1,8 +1,6 @@
 package kryo_design;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,12 +18,9 @@ public class MonitorLock<T> {
 	public void lock(T obj) {
 		lock.lock();
 		kryo = new Kryo();
-		try {
-			output = new Output(new FileOutputStream("file.dat"));
-			input = new Input(new FileInputStream("file.dat"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		output = new Output(baos);
+		input = new Input(output.getBuffer());
 		
 		kryo.writeClassAndObject(output, obj);
 		output.close();

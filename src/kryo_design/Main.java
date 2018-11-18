@@ -9,6 +9,11 @@ public class Main {
 		System.out.println(t);
 		t = m.abort();
 		System.out.println(t);
-		
+		m.lock(t);
+		t.increment();
+		t.increment();
+		System.out.println(t);
+		t = m.abort();
+		System.out.println(t);
 	}
 }
