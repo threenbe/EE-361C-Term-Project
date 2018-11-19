@@ -1,6 +1,6 @@
 # EE 361C Term Project
 
-### Monitor with Aborts
+## Monitor with Aborts
 
 This project implements a new type of monitor lock that enables user to have an additional command called `abort()`. Whenever an `abort` is issued, the state of the object is restored to the point at which this thread acquired the lock for that object.
 
@@ -8,7 +8,7 @@ This project utilizes the external library "Kryo" in order to implement our `Mon
 
 Instructions for setting up Kryo so that our code may be run can be found below.
 
-##### Setting up Kryo
+### Setting up Kryo
 
 1) Unzip the `kryo-4.0.1-all.zip` file.
 
@@ -16,7 +16,7 @@ Instructions for setting up Kryo so that our code may be run can be found below.
 
 3) In addition, there are 3 dependency JARs inside the `lib` folder within `kryo-4.0.1` that must also be added to the classpath.
 
-##### Test cases
+### Test cases
 
 There are currently 4 test cases used to test this monitor lock implementation. Each of their files describe how the tests work, but here are some short descriptions:
 
