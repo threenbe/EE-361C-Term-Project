@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * In addition, we will implement a new function, abort().
  * 
  * This implementation utilizes external library Kryo in order to serialize and deserialize
- * objects to save their states. Kryo's source code and release history may be found here:
+ * objects to save their states. Kryo's source code and release history can be found here:
  * https://github.com/EsotericSoftware/kryo 
  * @param <T>
  */
