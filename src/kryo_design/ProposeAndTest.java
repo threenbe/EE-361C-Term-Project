@@ -25,13 +25,15 @@ import java.util.Arrays;
 
 public class ProposeAndTest {
 	static final int SIZE = 20;
-	static MonitorLock<int[]> m = MonitorLock.from(new int[SIZE]);
+	static int answer[] = new int[SIZE];
+	static MonitorLock<int[]> m = MonitorLock.from(answer);
 	static int index = 0;
 	static ArrayList<Proposer> threads = new ArrayList<Proposer>();
 
 	public static void main(String[] args) throws InterruptedException {
 
 		while (true) {
+			answer = m.lock();
 
 			threads.clear();
 
@@ -43,8 +45,18 @@ public class ProposeAndTest {
 			for (int i = 0; i < SIZE; i++)
 				threads.get(i).join();
 
-			if (index == SIZE) {
-				break;
+			// Check if the correct thread wrote to answer[index]
+			if (answer[index] != index) {
+				m.abort();
+				System.out.println("Failed on " + Arrays.toString(m.show_state()));
+			}
+			// Success, move on to next index
+			else {
+				index++;
+				if (index == SIZE) { // Check if we're done
+					break;
+				}
+				m.unlock();
 			}
 
 		}
@@ -63,24 +75,9 @@ public class ProposeAndTest {
 
 		// Propose my value
 		public void run() {
-			int[] answer = m.lock();
-			if(index < answer.length) {
-				answer[index] = proposals[index];
-				// Check if the correct thread wrote to answer[index]
-				if (answer[index] != index) {
-					m.abort();
-					System.out.println("Failed on " + Arrays.toString(answer));
-				}
-				// Success, move on to next index
-				else {
-					index++;
-					m.unlock();
-				}
-			}
-
+			answer[index] = proposals[index];
 		}
 
 	}
 
 }
-
