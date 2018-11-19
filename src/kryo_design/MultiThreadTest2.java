@@ -1,5 +1,17 @@
 package kryo_design;
 
+/*
+ * This is a multi-threaded test in which several threads are adding various elements to
+ * an ArrayList that uses a MonitorLock. 
+ * 
+ * Values 1-10 are added to the ArrayList. Each value is added by locking on the ArrayList, 
+ * adding the value, and then unlocking the ArrayList.
+ * Values 11-20 are added to the ArrayList but rather than unlocking normally, the thread will
+ * instead issue an abort() to the monitor, restoring the ArrayList before the current value was
+ * added.
+ * The end result should be an ArrayList with values 1-10 only. Order does not matter.
+ */
+
 import java.util.ArrayList;
 
 import org.junit.Test;
