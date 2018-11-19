@@ -25,15 +25,14 @@ import java.util.Arrays;
 
 public class ProposeAndTest {
 	static final int SIZE = 20;
-	static int answer[] = new int[SIZE];
-	static MonitorLock<int[]> m = new MonitorLock<int[]>();
+	static MonitorLock<int[]> m = MonitorLock.from(new int[SIZE]);
 	static int index = 0;
 	static ArrayList<Proposer> threads = new ArrayList<Proposer>();
 
 	public static void main(String[] args) throws InterruptedException {
 
 		while (true) {
-			m.lock(answer);
+
 			threads.clear();
 
 			// Create SIZE threads, each of which will propose a value for answer[index]
@@ -44,27 +43,13 @@ public class ProposeAndTest {
 			for (int i = 0; i < SIZE; i++)
 				threads.get(i).join();
 
-			// Check if the correct thread wrote to answer[index]
-			if (answer[index] != index) {
-				answer = m.abort();
-				System.out.println("Failed on " + Arrays.toString(answer));
-				continue;	// Retry
-			} 
-			
-			
-			// Success, move on to next index
-			else {
-				index++;
-				if (index == SIZE) {	// Check if we're done
-					break;
-				}
+			if (index == SIZE) {
+				break;
 			}
-
-			m.unlock();
 
 		}
 
-		System.out.println("Final answer: " + Arrays.toString(answer));
+		System.out.println("Final answer: " + Arrays.toString(m.show_state()));
 
 	}
 
@@ -78,7 +63,21 @@ public class ProposeAndTest {
 
 		// Propose my value
 		public void run() {
-			answer[index] = proposals[index];
+			int[] answer = m.lock();
+			if(index < answer.length) {
+				answer[index] = proposals[index];
+				// Check if the correct thread wrote to answer[index]
+				if (answer[index] != index) {
+					m.abort();
+					System.out.println("Failed on " + Arrays.toString(answer));
+				}
+				// Success, move on to next index
+				else {
+					index++;
+					m.unlock();
+				}
+			}
+
 		}
 
 	}

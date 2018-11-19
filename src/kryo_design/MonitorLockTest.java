@@ -6,23 +6,23 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MonitorLockTest {
-	static MonitorLock<ArrayList<Integer>> lock = new MonitorLock<ArrayList<Integer>>();
-	static ArrayList<Integer> al = new ArrayList<Integer>();
+	static MonitorLock<ArrayList<Integer>> lock = MonitorLock.from(new ArrayList<Integer>());
 	boolean locked = false;
 	
 	
 	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		ArrayList<Integer> al = null;
 		while (true) {
 			System.out.println("Input a command; 'add #', 'get #', 'remove #', 'abort', 'lock'");
 			String input = reader.readLine();
 			String[] tokens = input.split(" ");
 			if (tokens[0].equals("lock")) {
-				lock.lock(al);
+				al = lock.lock();
 			} else if (tokens[0].equals("unlock")) {
 				lock.unlock();
 			} else if (tokens[0].equals("abort")) {
-				al = lock.abort();
+				lock.abort();
 			} else if (tokens[0].equals("add")) {
 				al.add(Integer.parseInt(tokens[1]));
 			} else if (tokens[0].equals("get")) {

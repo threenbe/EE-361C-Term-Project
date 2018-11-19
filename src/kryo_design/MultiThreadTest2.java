@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 public class MultiThreadTest2 {
-	static MonitorLock<ArrayList<Integer>> lock = new MonitorLock<ArrayList<Integer>>();
-	static ArrayList<Integer> al = new ArrayList<Integer>();
+	static MonitorLock<ArrayList<Integer>> lock = MonitorLock.from(new ArrayList<Integer>());
 	
 	@Test
 	public void testLock1() {
@@ -24,7 +23,7 @@ public class MultiThreadTest2 {
 			}
 		}
 		// should only have 1 to 10 here
-		System.out.println("testLock1 result is: " + al);
+		System.out.println("testLock1 result is: " + lock.show_state());
 	}
 
   
@@ -41,7 +40,7 @@ public class MultiThreadTest2 {
 		@Override
 		public void run() {
 			for (int i = begin; i <= end; ++i) {
-				lock.lock(al);
+				ArrayList<Integer> al = lock.lock();
 				al.add(i);
 				System.out.println("  adding " + i + ": " + al);
 				lock.unlock();
@@ -62,10 +61,10 @@ public class MultiThreadTest2 {
 		@Override
 		public void run() {
 			for (int i = begin; i <= end; ++i) {
-				lock.lock(al);
+				ArrayList<Integer> al = lock.lock();
 				al.add(i);
 				System.out.println("aborting " + i + ": " + al);
-				al = lock.abort();
+				lock.abort();
 			}
 		}
 	}
