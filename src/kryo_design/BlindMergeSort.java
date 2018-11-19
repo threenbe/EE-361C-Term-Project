@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class BlindMergeSort {
-	static final int SIZE = 10;
+	static final int SIZE = 5;
 	static int answer[] = new int[SIZE * SIZE];
 	static MonitorLock<int[]> m = MonitorLock.from(answer);
 	static ArrayList<Proposer> threads = new ArrayList<>();
