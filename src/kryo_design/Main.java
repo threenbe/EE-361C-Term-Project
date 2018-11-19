@@ -16,15 +16,15 @@ public class Main {
 		MonitorLock<Test> m = MonitorLock.from(new Test(5));
 		Test t = m.lock();
 		t.increment();
-		System.out.println(m.show_state());
+		System.out.println("Incremented value: " + m.show_state());
 		m.abort();
-		System.out.println(m.show_state());
+		System.out.println("After abort: " + m.show_state());
 
 		t = m.lock();
 		t.increment();
 		t.increment();
-		System.out.println(m.show_state());
+		System.out.println("Incremented value: " + m.show_state());
 		m.abort();
-		System.out.println(m.show_state());
+		System.out.println("After abort: " + m.show_state());
 	}
 }

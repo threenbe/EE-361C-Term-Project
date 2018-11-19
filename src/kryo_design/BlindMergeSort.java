@@ -1,5 +1,19 @@
 package kryo_design;
 
+/*
+ * This is a modification of the ProposeAndTest test case.
+ * 
+ * In this test case, SIZE threads each have their own randomly generated,
+ * sorted sub-arrays. There is an "answer" array that must end up with a sorted
+ * merged array. The master thread cannot modify the answer array but it orders 
+ * the other threads to write to the answer array over the course of several rounds.
+ * 
+ * The master is able to discern whether or not the threads have proposed the 
+ * correct value. If incorrect, it issues an abort() and restarts the round.
+ * The end result should be a sorted array  of the proper size(it's okay to 
+ * have repeat values).
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
