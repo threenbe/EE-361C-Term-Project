@@ -4,7 +4,7 @@
 
 This project implements a new type of monitor lock that enables user to have an additional command called `abort()`. Whenever an `abort` is issued, the state of the object is restored to the point at which this thread acquired the lock for that object.
 
-This project utilizes the external library "Kryo" in order to implement our `MonitorLock`. Kryo is a fast, efficient binary object graph serialization framework for Java. **Kryo's source code and release history can be found [here](https://github.com/EsotericSoftware/kryo).**
+The final solution for this project can be found in the `kryo_design` package. This project utilizes the external library "Kryo" in order to implement our `MonitorLock`. Kryo is a fast, efficient binary object graph serialization framework for Java. **Kryo's source code and release history can be found [here](https://github.com/EsotericSoftware/kryo).**
 
 Instructions for setting up Kryo so that our code may be run can be found below.
 
