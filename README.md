@@ -18,7 +18,7 @@ Instructions for setting up Kryo so that our code may be run can be found below.
 
 ### Test cases
 
-There are currently 4 test cases used to test this monitor lock implementation. Each of their files describe how the tests work, but here are some short descriptions:
+There are currently 5 test cases used to test this monitor lock implementation. Each of their files describe how the tests work, but here are some short descriptions:
 
 1) `Main.java` and `Test.java` form one basic test, in which the main program simply locks on a `Test` object which contains an integer field (initially set to 5) to be incremented. It is incremented once and then the thread issues an `abort()`, causing the object's value to revert back to 5 from 6. It then locks the object again, increments twice, and aborts again, showing that the object's value goes from 7 to 5.
 
