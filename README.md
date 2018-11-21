@@ -1,4 +1,4 @@
-# EE 361C Term Project
+# EE 361C (Multicore Computing) Term Project
 
 ## Monitor with Aborts
 
